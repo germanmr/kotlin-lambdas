@@ -18,7 +18,7 @@ plugins {
     id("io.freefair.lombok") version "5.3.0"
 }
 
-group = "com.german"
+group = "com.spacexdata.api"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
@@ -67,7 +67,7 @@ dependencies {
 }
 
 springBoot {
-    mainClassName = "com.german.notificationappkotlin.NotificationAppKotlinApplication"
+    mainClassName = "com.spacexdata.api.NotificationAppKotlinApplication"
 }
 
 tasks.withType<KotlinCompile> {
