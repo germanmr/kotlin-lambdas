@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine
+FROM eclipse-temurin:11-alpine
 
 ENV SPRING_PROFILES_ACTIVE=prod
 ENV SERVER_PORT=8080
