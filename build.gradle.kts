@@ -93,6 +93,6 @@ docker {
 dockerRun {
     name = project.name
     image = "${project.name}:${project.version}"
-    env(mapOf(Pair("SPRING_PROFILES_ACTIVE", "dev")))
+    env(mapOf(Pair("SPRING_PROFILES_ACTIVE", "prod")))
     ports("8080:8080")
 }
