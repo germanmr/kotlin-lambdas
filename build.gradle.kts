@@ -21,7 +21,7 @@ plugins {
     id("com.palantir.docker-run") version "0.31.0"
 }
 
-group = "com.german"
+group = "com.spacexdata.api"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
