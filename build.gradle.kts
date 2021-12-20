@@ -16,6 +16,9 @@ plugins {
 
     kotlin("plugin.lombok") version "1.6.0"
     id("io.freefair.lombok") version "5.3.0"
+
+    id("com.palantir.docker") version "0.31.0"
+    id("com.palantir.docker-run") version "0.31.0"
 }
 
 group = "com.spacexdata.api"
@@ -67,7 +70,7 @@ dependencies {
 }
 
 springBoot {
-    mainClassName = "com.spacexdata.api.NotificationAppKotlinApplication"
+    mainClass.set("com.spacexdata.api.NotificationAppKotlinApplicationKt")
 }
 
 tasks.withType<KotlinCompile> {
@@ -79,4 +82,17 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+docker {
+    name = "${project.name}:${project.version}"
+    copySpec.from("build").into("build")
+    setDockerfile(file("Dockerfile"))
+}
+
+dockerRun {
+    name = project.name
+    image = "${project.name}:${project.version}"
+    env(mapOf(Pair("SPRING_PROFILES_ACTIVE", "prod")))
+    ports("8080:8080")
 }
