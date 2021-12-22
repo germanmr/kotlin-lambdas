@@ -15,7 +15,7 @@ class LaunchesController {
     private val list = listOf(
         LaunchDTO(
             LinksDTO(
-                URL("https://images2.imgbox.com/53/22/dh0XSLXO_o.png"),
+                URL("https://spacex-app-images.s3.eu-central-1.amazonaws.com/Vev7xkUX_o.png"),
                 URL("https://youtu.be/1MkcWK2PnsU"),
                 URL("https://spaceflightnow.com/2020/03/07/late-night-launch-of-spacex-cargo-ship-marks-end-of-an-era/"),
                 URL("https://en.wikipedia.org/wiki/SpaceX_CRS-20"),
