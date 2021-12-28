@@ -13,7 +13,11 @@ import org.springframework.web.util.UriComponentsBuilder
 @Service
 class RestTemplateService {
 
-    // Class properties
+    /**
+     * A form of Generic Logger
+     * USAGE: This companion object can be copied on any class with any changes
+     * Access to logger: using the porperty name "logger"
+     */
     companion object {
         @Suppress("JAVA_CLASS_ON_COMPANION")
         @JvmStatic
