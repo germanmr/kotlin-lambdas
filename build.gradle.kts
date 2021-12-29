@@ -64,6 +64,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:0.24.1")
     implementation("org.jetbrains.exposed:exposed-dao:0.24.1")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.24.1")
+    testImplementation("com.h2database:h2:2.0.202")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
@@ -85,6 +86,7 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    jvmArgs("-Dspring.profiles.active=test")
 }
 
 docker {

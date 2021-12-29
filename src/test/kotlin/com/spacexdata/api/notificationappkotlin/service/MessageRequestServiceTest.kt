@@ -1,5 +1,6 @@
 package com.spacexdata.api.notificationappkotlin.service
 
+import com.spacexdata.api.notificationappkotlin.config.Profiles.TEST
 import com.spacexdata.api.notificationappkotlin.domain.Client
 import com.spacexdata.api.notificationappkotlin.domain.Medias
 import com.spacexdata.api.notificationappkotlin.domain.MessageRequest
@@ -22,7 +23,7 @@ import java.util.*
 @SpringBootTest
 @Rollback
 @ExtendWith(MockKExtension::class)
-@ActiveProfiles("test")
+@ActiveProfiles(TEST)
 class MessageRequestServiceTest {
 
     @MockK

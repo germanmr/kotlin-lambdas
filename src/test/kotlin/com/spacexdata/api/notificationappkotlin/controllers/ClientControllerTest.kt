@@ -1,5 +1,7 @@
 package com.spacexdata.api.notificationappkotlin.controllers
 
+import com.spacexdata.api.notificationappkotlin.config.Profiles
+import com.spacexdata.api.notificationappkotlin.config.Profiles.TEST
 import com.spacexdata.api.notificationappkotlin.controllers.dto.ComplexClientDTO
 import com.spacexdata.api.notificationappkotlin.domain.Medias
 import com.spacexdata.api.notificationappkotlin.external.RestTemplateService
@@ -19,7 +21,7 @@ import org.springframework.test.context.ActiveProfiles
 @SpringBootTest
 // We must use this for injecting dependencies, if not we get a "not initialize on lateinit vars"
 @ExtendWith(MockKExtension::class)
-@ActiveProfiles("test")
+@ActiveProfiles(TEST)
 class ClientControllerTest {
 
     @MockK
