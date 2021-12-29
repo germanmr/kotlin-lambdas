@@ -41,7 +41,7 @@ class ImageStorageHandlerImpl : ImageStorageHandler {
     @Async
     override fun upload(multipartFile: MultipartFile) {
         val file: File = convertMultiPartFileToFile(multipartFile)
-        logger.info("Uploading file with name {}", file.name)
+        logger.info("Uploading file with name ${file.name}")
         uploadFile(file);
         deleteTemporaryFile(file)
     }
@@ -52,9 +52,9 @@ class ImageStorageHandlerImpl : ImageStorageHandler {
         try {
             FileOutputStream(file).use { outputStream -> outputStream.write(multipartFile.bytes) }
         } catch (e: FileNotFoundException) {
-            throw ImageUploadException(String.format("Cannot open stream for file %s", file.name), e)
+            throw ImageUploadException("Cannot open stream for file ${file.name}", e)
         } catch (e: SecurityException) {
-            throw ImageUploadException(String.format("Cannot write to file %s due to permission issue", file.name), e)
+            throw ImageUploadException("Cannot write to file ${file.name} due to permission issue", e)
         }
         return file
     }
@@ -64,9 +64,9 @@ class ImageStorageHandlerImpl : ImageStorageHandler {
             val putObjectRequest = PutObjectRequest(Constants.AMAZON_IMAGE_BUCKET_NAME, file.name, file)
             amazonS3.putObject(putObjectRequest)
         } catch (e: SdkClientException) {
-            throw ImageUploadException(String.format("Error %s occurred in the client while processing request", e.localizedMessage), e)
+            throw ImageUploadException("Error ${e.localizedMessage} occurred in the client while processing request", e)
         } catch (e: AmazonServiceException) {
-            throw ImageUploadException(String.format("Error %s occurred while uploading file to s3 bucket %s", e.localizedMessage, Constants.AMAZON_IMAGE_BUCKET_NAME), e)
+            throw ImageUploadException("Error ${e.localizedMessage} occurred while uploading file to s3 bucket ${Constants.AMAZON_IMAGE_BUCKET_NAME}", e)
         }
     }
 
@@ -74,9 +74,9 @@ class ImageStorageHandlerImpl : ImageStorageHandler {
         try {
             Files.delete(file.toPath())
         } catch (e: IOException) {
-            logger.error("Error {} occurred while deleting temporary file", e.localizedMessage)
+            logger.error("Error ${e.localizedMessage} occurred while deleting temporary file")
         } catch (e: SecurityException) {
-            logger.error("Error {} occurred while deleting temporary file because of lack of delete permissions", e.localizedMessage)
+            logger.error("Error ${e.localizedMessage} occurred while deleting temporary file because of lack of delete permissions")
         }
     }
 }
