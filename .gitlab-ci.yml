@@ -46,9 +46,6 @@ deploy_staging:
     - docker info
     - docker --version
   script:
-    # We could also use "$CI_PIPELINE_IID" instead of "latest" as a tag for the docker image
-    # This should be defined when defining the last version of ECS. The problem is when re-deploying,
-    # unfortunately, tagging with "latest" does not always re-reploy on the EC2 instance
     - docker build -t $DOCKER_REGISTRY/$APP_NAME:latest .
     - docker push $DOCKER_REGISTRY/$APP_NAME:latest
   only:
