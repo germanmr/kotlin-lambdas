@@ -69,7 +69,7 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
 
-    implementation("com.amazonaws:aws-java-sdk:1.12.129")
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.129")
 
 }
 
