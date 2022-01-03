@@ -1,4 +1,4 @@
-package com.spacexdata.api.notificationappkotlin.config
+package com.spacexdata.api.config
 
 /**
  * Alternative to enums usage when we have ( KEY - VALUES )

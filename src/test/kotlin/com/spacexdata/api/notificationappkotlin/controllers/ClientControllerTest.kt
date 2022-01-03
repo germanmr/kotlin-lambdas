@@ -1,7 +1,6 @@
 package com.spacexdata.api.notificationappkotlin.controllers
 
-import com.spacexdata.api.notificationappkotlin.config.Profiles
-import com.spacexdata.api.notificationappkotlin.config.Profiles.TEST
+import com.spacexdata.api.config.Profiles.TEST
 import com.spacexdata.api.notificationappkotlin.controllers.dto.ComplexClientDTO
 import com.spacexdata.api.notificationappkotlin.domain.Medias
 import com.spacexdata.api.notificationappkotlin.external.RestTemplateService
