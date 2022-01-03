@@ -1,6 +1,6 @@
-package com.spacexdata.api.notificationappkotlin.config
+package com.spacexdata.api.config
 
-import com.spacexdata.api.notificationappkotlin.config.Profiles.LOCAL
+import com.spacexdata.api.config.Profiles.LOCAL
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
