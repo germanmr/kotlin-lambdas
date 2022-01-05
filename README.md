@@ -1,3 +1,16 @@
+### PREREQUISITES FOR STARTING THE SERVICE
+
+**Mandatory:**
+- PostgreSQL running locally on a default port,recommended version:  
+` docker run --name postgres:12.8-alpine -e POSTGRES_PASSWORD=password -d postgres `
+- Create a database called: "launchdb"
+   
+**Optional:**
+- Kafka running locally on a default port, recommend version:  
+`  docker-compose -f "docker-compose.yaml" up `  
+This docker-compose is packed with a Kafka monitor called Kafdrop, in the browser go to:  
+  `  http://localhost:9000/  `
+
 ### RUNNING WITH PROFILES
 
 **Running the project from Intellij Idea Community Edition IDE with a specific profile:**  

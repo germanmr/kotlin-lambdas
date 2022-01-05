@@ -20,6 +20,7 @@ data class Launch(
     val name: String,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     val date_utc: Date,
+    val status : LaunchStatus,
     @Id
     @GenericGenerator(
         name = "sequence_spacex_launch_id",

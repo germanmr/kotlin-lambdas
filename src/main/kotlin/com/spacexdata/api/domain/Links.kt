@@ -9,5 +9,5 @@ data class Links(
     val patch: Patch,
     val webcast: String,
     val article: String,
-    val wikipedia: String
+    val wikipedia: String,
 )

@@ -1,34 +1,34 @@
 package com.spacexdata.api.controllers
 
+import com.spacexdata.api.domain.LaunchStatus
 import com.spacexdata.api.domain.dto.LaunchDTO
-import com.spacexdata.api.domain.dto.LinksDTO
+import com.spacexdata.api.services.launch.LaunchService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import java.net.URL
-import java.util.*
+import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("launches")
 class LaunchesController {
 
-    private val list = listOf(
-        LaunchDTO(
-            LinksDTO(
-                URL("https://spacex-app-images.s3.us-east-2.amazonaws.com/Vev7xkUX_o.png"),
-                URL("https://youtu.be/1MkcWK2PnsU"),
-                URL("https://spaceflightnow.com/2020/03/07/late-night-launch-of-spacex-cargo-ship-marks-end-of-an-era/"),
-                URL("https://en.wikipedia.org/wiki/SpaceX_CRS-20"),
-            ),
-            true,
-            "CRS-20",
-            Date(),
-            "5eb87d42ffd86e000604b384"
-        )
-    )
+    @Autowired
+    lateinit var launchService: LaunchService
 
     @GetMapping("")
-    fun get(): List<LaunchDTO> {
-        return list
+    fun get(
+        @RequestParam(name = "id", required = false) id: String?,
+        @RequestParam(name = "status", required = false) status: LaunchStatus?,
+        @RequestParam(name = "fromDate", required = false)
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        fromDate: LocalDateTime?,
+        @RequestParam(name = "toDate", required = false)
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        toDate: LocalDateTime?
+    ): List<LaunchDTO> {
+        return launchService.getLaunchesByCriteria(id, status, fromDate, toDate)
     }
 }

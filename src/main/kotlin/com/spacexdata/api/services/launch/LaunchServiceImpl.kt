@@ -1,10 +1,14 @@
 package com.spacexdata.api.services.launch
 
 import com.spacexdata.api.domain.Launch
+import com.spacexdata.api.domain.LaunchStatus
 import com.spacexdata.api.domain.Links
 import com.spacexdata.api.domain.Patch
+import com.spacexdata.api.domain.dto.LaunchConverter
+import com.spacexdata.api.domain.dto.LaunchDTO
 import com.spacexdata.api.external.randomusergenerator.RandommerClientImpl
 import com.spacexdata.api.notificationappkotlin.log.Utils
+import com.spacexdata.api.repository.LaunchCriteriaRepository
 import com.spacexdata.api.repository.LaunchRepository
 import kotlinx.coroutines.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,6 +16,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.random.Random.Default.nextBoolean
@@ -31,10 +36,16 @@ class LaunchServiceImpl : LaunchService {
     lateinit var launchRepository: LaunchRepository
 
     @Autowired
+    lateinit var launchCriteriaRepository: LaunchCriteriaRepository
+
+    @Autowired
     lateinit var randommerClient: RandommerClientImpl
 
     @Autowired
     lateinit var coroutineDispatcher: CoroutineDispatcher
+
+    @Autowired
+    lateinit var launchConverter: LaunchConverter
 
     override fun deleteAllLaunches() {
         // We´re using deleteAll() instead of a Query because we might add inheritance,
@@ -45,6 +56,15 @@ class LaunchServiceImpl : LaunchService {
         if (launchRepository.findAll(Pageable.ofSize(1)).totalElements > 0L) {
             throw Exception("Records were not deleted")
         }
+    }
+
+    override fun getLaunchesByCriteria(
+        id: String?,
+        status: LaunchStatus?,
+        fromDate: LocalDateTime?,
+        toDate: LocalDateTime?
+    ): List<LaunchDTO> {
+        return launchConverter.convertToDto(launchCriteriaRepository.find(id, LaunchStatus.PENDING, fromDate, toDate))
     }
 
     @Async
@@ -90,9 +110,11 @@ class LaunchServiceImpl : LaunchService {
         val wikipedia = "https://en.wikipedia.org/wiki/${name}"
         logger.info("Creating record!")
         launchRepository.save(
-            Launch(Links(Patch(small), webcast, article, wikipedia), nextBoolean(), name, Date(), "")
+            Launch(Links(Patch(small), webcast, article, wikipedia), nextBoolean(), name, Date(), getRandomStatus(), "")
         )
     }
+
+    private fun getRandomStatus(): LaunchStatus = LaunchStatus.values().toList().shuffled().first()
 
     suspend fun getExternalRandomPatchSmall(): String {
         val filename = getExternalRandomString()
@@ -109,8 +131,8 @@ class LaunchServiceImpl : LaunchService {
     private fun getRandomArticleTitle(): String = randommerClient.getRandomArticle()
 
     private fun getRandomDate(): String {
-        var formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-        var date = LocalDate.parse(
+        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+        val date = LocalDate.parse(
             "${nextInt(from = 2021, until = 2030)}/${nextInt(from = 1, until = 12).toString().padStart(2, '0')}/${
                 nextInt(
                     from = 1,
