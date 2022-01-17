@@ -14,11 +14,10 @@ plugins {
     // https://kotlinlang.org/docs/no-arg-plugin.html#jpa-support
     id("org.jetbrains.kotlin.plugin.jpa") version "1.5.31"
 
-    kotlin("plugin.lombok") version "1.6.0"
-    id("io.freefair.lombok") version "5.3.0"
-
     id("com.palantir.docker") version "0.31.0"
     id("com.palantir.docker-run") version "0.31.0"
+
+    kotlin("kapt") version "1.5.10"
 }
 
 group = "com.spacexdata.api"
@@ -72,6 +71,9 @@ dependencies {
     }
 
     implementation("com.amazonaws:aws-java-sdk-s3:1.12.130")
+
+    implementation("org.mapstruct:mapstruct:1.4.2.Final")
+    kapt("org.mapstruct:mapstruct-processor:1.4.2.Final")
 
 }
 

@@ -27,7 +27,7 @@ class RestClientService {
 
     private inline fun <reified T : Any> get(path: String): T = try {
         val headers = HttpHeaders()
-        headers.set("X-API-KEY", "886b57a642a843b0824086ef59adcac8")
+        headers.set("X-API-KEY", "8c3c4ca0f5c24e9e96fc2d96159bcd80")
         val requestEntity: HttpEntity<Void> = HttpEntity<Void>(headers)
         restTemplate.exchange(
             spaceXConfiguration.url + path, HttpMethod.GET, requestEntity, T::class.java, null
@@ -41,7 +41,7 @@ class RestClientService {
 
     fun getCollection(path: String): Array<String> = try {
         val headers = HttpHeaders()
-        headers.set("X-API-KEY", "886b57a642a843b0824086ef59adcac8")
+        headers.set("X-API-KEY", "8c3c4ca0f5c24e9e96fc2d96159bcd80")
         val requestEntity: HttpEntity<Void> = HttpEntity<Void>(headers)
         restTemplate.exchange(
             spaceXConfiguration.url + path, HttpMethod.GET, requestEntity, Array<String>::class.java, null
