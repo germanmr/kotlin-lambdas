@@ -20,34 +20,43 @@ class RestClientService {
     }
 
     @Autowired
+    lateinit var api_key_container: ApiKeyProperty
+
+    @Autowired
     lateinit var spaceXConfiguration: SpaceXConfiguration
 
     @Autowired
     lateinit var restTemplate: RestTemplate
 
-    private inline fun <reified T : Any> get(path: String): T = try {
-        val headers = HttpHeaders()
-        headers.set("X-API-KEY", "8c3c4ca0f5c24e9e96fc2d96159bcd80")
-        val requestEntity: HttpEntity<Void> = HttpEntity<Void>(headers)
+    fun <T : Any> get(path: String) = getReified<Any>(path)
+
+    private inline fun <reified T : Any> getReified(path: String): T = try {
         restTemplate.exchange(
-            spaceXConfiguration.url + path, HttpMethod.GET, requestEntity, T::class.java, null
+            spaceXConfiguration.url + path,
+            HttpMethod.GET,
+            getHttpRequestWithHeaders(),
+            T::class.java
         ).body!!
     } catch (e: RestClientResponseException) {
         logger.error("There was an error while consuming the service. Error: $e")
         throw Exception(e.message)
     }
 
-    fun <T : Any> getSomething(path: String) = get<Any>(path)
-
     fun getCollection(path: String): Array<String> = try {
-        val headers = HttpHeaders()
-        headers.set("X-API-KEY", "8c3c4ca0f5c24e9e96fc2d96159bcd80")
-        val requestEntity: HttpEntity<Void> = HttpEntity<Void>(headers)
         restTemplate.exchange(
-            spaceXConfiguration.url + path, HttpMethod.GET, requestEntity, Array<String>::class.java, null
+            spaceXConfiguration.url + path,
+            HttpMethod.GET,
+            getHttpRequestWithHeaders(),
+            Array<String>::class.java
         ).body!!
     } catch (e: RestClientResponseException) {
         logger.error("There was an error while consuming the service. Error: $e")
         throw Exception(e.message, e)
+    }
+
+    private fun getHttpRequestWithHeaders(): HttpEntity<Void> {
+        val headers = HttpHeaders()
+        headers.set("X-API-KEY", api_key_container.api_key)
+        return HttpEntity<Void>(headers)
     }
 }

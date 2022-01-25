@@ -10,17 +10,17 @@ class RandommerClientImpl {
     @Autowired
     lateinit var restClientService: RestClientService
 
-    fun getRandomPassword(): String =
+    suspend fun getRandomPassword(): String =
         restClientService
-            .getSomething<String>("Text/Password?length=10&hasDigits=true&hasUppercase=true&hasSpecial=false")
+            .get<String>("Text/Password?length=10&hasDigits=true&hasUppercase=true&hasSpecial=false")
             .toString()
 
-    fun getRandomName(): String =
+    suspend fun getRandomName(): String =
         restClientService.getCollection("Name?nameType=surname&quantity=1")[0]
 
-    fun getRandomArticle(): String =
+    suspend fun getRandomArticle(): String =
         restClientService
-            .getSomething<String>("Text/LoremIpsum?loremType=business&type=words&number=12")
+            .get<String>("Text/LoremIpsum?loremType=business&type=words&number=12")
             .toString()
             .removeSpecialCharacters()
             .replace(" ", "-")

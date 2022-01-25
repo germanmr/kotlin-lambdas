@@ -25,3 +25,11 @@ services:
       KAFKA_RESTART_ATTEMPTS: "10"
       KAFKA_RESTART_DELAY: "5"
       ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL: "0"
+  postgres:
+    image: postgres:12.9-alpine
+    restart: always
+    environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+    ports:
+        - '5432:5432'      

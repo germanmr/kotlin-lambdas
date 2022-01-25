@@ -17,11 +17,13 @@ import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.random.Random.Default.nextBoolean
 import kotlin.random.Random.Default.nextInt
 import kotlin.system.measureTimeMillis
+
 
 @Service
 class LaunchServiceImpl : LaunchService {
@@ -78,10 +80,13 @@ class LaunchServiceImpl : LaunchService {
                 createRecordAsync()
             }
         }
-        logger.info("Finished ten Launches!")
+        logger.info("Finished all Launches!")
     }
 
-    private suspend fun createRecordAsync() = coroutineScope {
+    @Async
+    suspend fun createRecordAsync() = coroutineScope {
+
+        // Create the entity, save it
         logger.info("Starting search with coroutines list")
         val tasks = listOf(
             async(coroutineDispatcher) { getExternalRandomPatchSmall() },
@@ -104,14 +109,20 @@ class LaunchServiceImpl : LaunchService {
         val small = returnedValues[0]
         val webcast = returnedValues[1]
         val name = returnedValues[2]
+
         logger.info("Getting article!")
         val article = getExternalRandomArticle()
 
+        val status = getRandomStatus()
+        val success = nextBoolean()
         val wikipedia = "https://en.wikipedia.org/wiki/${name}"
-        logger.info("Creating record!")
-        launchRepository.save(
-            Launch(Links(Patch(small), webcast, article, wikipedia), nextBoolean(), name, Date(), getRandomStatus(), "")
-        )
+        val date = getRandomDate()
+
+        val launch =
+            Launch(Links(Patch(small), webcast, article, wikipedia), success, name, date, status, "")
+
+        logger.info("Inserting record!")
+        launchRepository.save(launch)
     }
 
     private fun getRandomStatus(): LaunchStatus = LaunchStatus.values().toList().shuffled().first()
@@ -121,16 +132,29 @@ class LaunchServiceImpl : LaunchService {
         return "https://images2.imgbox.com/${nextInt()}/${nextInt()}/${filename}.png"
     }
 
-    fun getExternalRandomArticle(): String {
+    suspend fun getExternalRandomArticle(): String {
         val title = getRandomArticleTitle()
-        val date = getRandomDate()
+        val date = getRandomDateString()
 
         return "https://spaceflightnow.com/$date/$title"
     }
 
-    private fun getRandomArticleTitle(): String = randommerClient.getRandomArticle()
+    private suspend fun getRandomArticleTitle(): String = randommerClient.getRandomArticle()
 
-    private fun getRandomDate(): String {
+    private fun getRandomDate(): Date {
+        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+        val randomLocalDate = LocalDate.parse(
+            "${nextInt(from = 2021, until = 2030)}/${nextInt(from = 1, until = 12).toString().padStart(2, '0')}/${
+                nextInt(
+                    from = 1,
+                    until = 27
+                ).toString().padStart(2, '0')
+            }", formatter
+        )
+        return Date.from(randomLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+    }
+
+    private fun getRandomDateString(): String {
         val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
         val date = LocalDate.parse(
             "${nextInt(from = 2021, until = 2030)}/${nextInt(from = 1, until = 12).toString().padStart(2, '0')}/${

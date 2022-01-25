@@ -70,6 +70,8 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
 
+    testImplementation("junit:junit:4.13")
+
     implementation("com.amazonaws:aws-java-sdk-s3:1.12.130")
 
     implementation("org.mapstruct:mapstruct:1.4.2.Final")
