@@ -44,8 +44,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-    implementation("org.springframework.kafka:spring-kafka")
-    testImplementation("org.springframework.kafka:spring-kafka-test")
+    implementation("org.springframework.kafka:spring-kafka:2.9.2")
+    testImplementation("org.springframework.kafka:spring-kafka-test:2.9.2")
     testImplementation("io.mockk:mockk:1.12.0")
 
 
